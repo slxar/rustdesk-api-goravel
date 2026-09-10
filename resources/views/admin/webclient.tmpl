@@ -1,0 +1,8 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Web client · RustDesk</title><link rel="stylesheet" href="/public/css/admin.css?v=3.0.1"></head>
+<body>{{template "shell.tmpl" .}}
+<main id="content"><h1>Connect in your browser</h1><p>Create a single-use link for one RustDesk host. The link expires after five minutes; an opened session lasts up to one hour. The host still requires its password or approval.</p>
+{{if .Error}}<p class="notice error" role="alert">{{.Error}}</p>{{end}}
+<form class="filters" method="post" action="/_admin/webclient"><input type="hidden" name="_token" value="{{.CsrfToken}}"><label>RustDesk ID<input name="id" required minlength="6" maxlength="64" pattern="[A-Za-z0-9_-]+" autocomplete="off"></label><button>Create access link</button></form>
+{{if .Link}}<p><a href="{{.Link}}" rel="noreferrer">Open remote desktop</a></p><div class="filters"><label>Single-use access link<input readonly value="{{.Link}}" aria-label="Single-use access link"></label></div><p>Share this link only with its intended recipient. Opening it does not require portal login.</p>{{end}}
+</main></div></body></html>

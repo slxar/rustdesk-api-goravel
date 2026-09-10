@@ -1,0 +1,24 @@
+{
+  "name": "rustdesk-browser-session",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build && node scripts/source.mjs",
+    "preview": "vite preview",
+    "test": "node tests/run.mjs"
+  },
+  "devDependencies": {
+    "esbuild": "0.28.2",
+    "typescript": "7.0.2",
+    "vite": "8.2.2"
+  },
+  "dependencies": {
+    "fast-sha256": "1.3.0",
+    "libsodium-wrappers": "0.8.4",
+    "protobufjs": "8.8.0",
+    "wasm-feature-detect": "1.9.0",
+    "zstddec": "0.3.1"
+  },
+  "private": true,
+  "type": "module"
+}

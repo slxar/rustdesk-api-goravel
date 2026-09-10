@@ -1,0 +1,16 @@
+RustDesk browser session transport
+
+Derived from AllenMGu/webclient-v1 at 6a77fe146336ffefe9636af27422bd472c6a192e,
+whose transport derives from JelleBuning/rustdesk at
+47a7b7313bb906ebdae36bd16838bdefa8853639 (RustDesk V1).
+Copyright RustDesk authors and contributors, including Purslane, Inc.,
+Purslane Ltd. and ZJUPI. Distributed under GNU AGPLv3; see LICENSE.
+
+Modifications: native session UI, fixed target and same-origin gateway binding,
+fail-closed server/peer signature verification, memory-only host password,
+and current JavaScript dependencies. Modified source and build instructions
+are supplied by /webclient/source.tar.gz.
+
+The API repository license does not replace the AGPLv3 license for this component.
+OGV.js/YUVCanvas, libvpx, and third-party dependencies retain their own licenses.
+See static/ogvjs-1.8.6/ and THIRD_PARTY_NOTICES.txt.

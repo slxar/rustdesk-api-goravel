@@ -1,0 +1,19 @@
+<a class="skip" href="#content">Skip to content</a>
+<header class="topbar"><a href="/_admin">RustDesk Admin</a><form method="post" action="/_admin/logout"><input type="hidden" name="_token" value="{{.CsrfToken}}"><button class="link">Sign out</button></form></header>
+<div class="shell">
+  <nav class="admin-nav" aria-label="Admin navigation">
+    <a href="/_admin"{{if eq .Title "Dashboard"}} aria-current="page"{{end}}>Dashboard</a>
+    <a href="/_admin/users"{{if eq .Path "/_admin/users"}} aria-current="page"{{end}}>Users</a>
+    <a href="/_admin/peers"{{if eq .Path "/_admin/peers"}} aria-current="page"{{end}}>Peers</a>
+    <a href="/_admin/webclient"{{if eq .Path "/_admin/webclient"}} aria-current="page"{{end}}>Web client</a>
+    <a href="/_admin/integration-tokens"{{if eq .Path "/_admin/integration-tokens"}} aria-current="page"{{end}}>Integration API tokens</a>
+    <a href="/_admin/groups"{{if eq .Path "/_admin/groups"}} aria-current="page"{{end}}>Groups</a>
+    <a href="/_admin/address-books"{{if eq .Path "/_admin/address-books"}} aria-current="page"{{end}}>Address books</a>
+    <a href="/_admin/tags"{{if eq .Path "/_admin/tags"}} aria-current="page"{{end}}>Tags</a>
+    <a href="/_admin/audits"{{if eq .Path "/_admin/audits"}} aria-current="page"{{end}}>Audit logs</a>
+    <a href="/_admin/alarms"{{if eq .Path "/_admin/alarms"}} aria-current="page"{{end}}>Alarm logs</a>
+    <a href="/_admin/tokens"{{if eq .Path "/_admin/tokens"}} aria-current="page"{{end}}>Tokens</a>
+    <a href="/_admin/oauth"{{if eq .Path "/_admin/oauth"}} aria-current="page"{{end}}>OAuth</a>
+    <a href="/_admin/ldap"{{if eq .Path "/_admin/ldap"}} aria-current="page"{{end}}>LDAP</a>
+    <a href="/_admin/config"{{if eq .Path "/_admin/config"}} aria-current="page"{{end}}>Configuration</a>
+  </nav>

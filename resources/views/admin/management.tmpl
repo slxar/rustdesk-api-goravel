@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>{{.Title}} management</title>
+  <link rel="stylesheet" href="/public/css/admin.css?v=3.0.1"><link rel="stylesheet" href="/public/css/admin-management.css?v=3.0.1">
+  <script src="/public/vendor/htmx/htmx.min.js?v=2.0.10" defer></script>
+</head>
+<body hx-headers='{"X-CSRF-TOKEN":"{{.CsrfToken}}"}'>
+<a class="skip" href="#content">Skip to content</a>
+<header class="topbar">
+  <a href="/_admin">RustDesk Admin</a>
+  <form method="post" action="/_admin/logout"><input type="hidden" name="_token" value="{{.CsrfToken}}"><button class="link">Sign out</button></form>
+</header>
+<main id="content" class="management">
+  <p><a href="/_admin/{{.Resource}}">← Back to {{.Title}}</a></p>
+  <h1>{{.Title}} management</h1>
+  <p class="management-intro">Choose one operation below. IDs are shown in the current records table.</p>
+  {{if .Notice}}<p class="notice" role="status">{{.Notice}}</p>{{end}}
+  <div id="action-result" aria-live="polite"></div>
+  <div class="management-grid">
+    {{if eq .Resource "users"}}
+      <section class="operation" aria-labelledby="user-create-title">
+        <h2 id="user-create-title">Create user</h2>
+        <form method="post" action="/_admin/manage/user-create" hx-post="/_admin/manage/user-create" hx-target="#action-result">
+          {{template "user" .}}
+          <label>Password <input name="password" type="password" minlength="4" maxlength="32" autocomplete="new-password" required></label>
+          <button>Create user</button>
+        </form>
+      </section>
+      <section class="operation" aria-labelledby="user-update-title">
+        <h2 id="user-update-title">Update user</h2>
+        <p>Enter the complete replacement profile for the selected ID.</p>
+        <form method="post" action="/_admin/manage/user-update" hx-post="/_admin/manage/user-update" hx-target="#action-result">
+          <label>ID <input name="id" type="number" min="1" required></label>{{template "user" .}}<button>Update user</button>
+        </form>
+      </section>
+      <section class="operation" aria-labelledby="user-password-title">
+        <h2 id="user-password-title">Reset password</h2>
+        <form method="post" action="/_admin/manage/user-password" hx-post="/_admin/manage/user-password" hx-target="#action-result">
+          <input type="hidden" name="_token" value="{{.CsrfToken}}">
+          <label>ID <input name="id" type="number" min="1" required></label>
+          <label>New password <input name="password" type="password" minlength="4" maxlength="32" autocomplete="new-password" required></label>
+          <button>Reset password</button>
+        </form>
+      </section>
+      <section class="operation danger-zone" aria-labelledby="user-delete-title">
+        <h2 id="user-delete-title">Delete user</h2>
+        <form method="post" action="/_admin/manage/user-delete" hx-post="/_admin/manage/user-delete" hx-target="#action-result">
+          {{template "confirm" .}}<button class="danger">Delete user</button>
+        </form>
+      </section>
+    {{else if eq .Resource "groups"}}
+      <section class="operation" aria-labelledby="group-create-title"><h2 id="group-create-title">Create group</h2><form method="post" action="/_admin/manage/group-create" hx-post="/_admin/manage/group-create" hx-target="#action-result">{{template "group" .}}<button>Create group</button></form></section>
+      <section class="operation" aria-labelledby="group-update-title"><h2 id="group-update-title">Update group</h2><form method="post" action="/_admin/manage/group-update" hx-post="/_admin/manage/group-update" hx-target="#action-result"><label>ID <input name="id" type="number" min="1" required></label>{{template "group" .}}<button>Update group</button></form></section>
+      <section class="operation danger-zone" aria-labelledby="group-delete-title"><h2 id="group-delete-title">Delete group</h2><form method="post" action="/_admin/manage/group-delete" hx-post="/_admin/manage/group-delete" hx-target="#action-result">{{template "confirm" .}}<button class="danger">Delete group</button></form></section>
+    {{else if eq .Resource "tokens"}}
+      <section class="operation danger-zone" aria-labelledby="token-revoke-title"><h2 id="token-revoke-title">Revoke token</h2><form method="post" action="/_admin/manage/token-revoke" hx-post="/_admin/manage/token-revoke" hx-target="#action-result">{{template "confirm" .}}<button class="danger">Revoke token</button></form></section>
+    {{else if eq .Resource "oauth"}}
+      <section class="operation" aria-labelledby="oauth-create-title"><h2 id="oauth-create-title">Create OAuth provider</h2><form method="post" action="/_admin/manage/oauth-create" hx-post="/_admin/manage/oauth-create" hx-target="#action-result">{{template "oauth" .}}<button>Create provider</button></form></section>
+      <section class="operation" aria-labelledby="oauth-update-title"><h2 id="oauth-update-title">Update OAuth provider</h2><p>Re-enter the client secret because stored secrets are never displayed.</p><form method="post" action="/_admin/manage/oauth-update" hx-post="/_admin/manage/oauth-update" hx-target="#action-result"><label>ID <input name="id" type="number" min="1" required></label>{{template "oauth" .}}<button>Update provider</button></form></section>
+      <section class="operation danger-zone" aria-labelledby="oauth-delete-title"><h2 id="oauth-delete-title">Delete OAuth provider</h2><form method="post" action="/_admin/manage/oauth-delete" hx-post="/_admin/manage/oauth-delete" hx-target="#action-result">{{template "confirm" .}}<button class="danger">Delete provider</button></form></section>
+    {{end}}
+  </div>
+  {{if .Items}}
+    <section class="records" aria-labelledby="records-title"><h2 id="records-title">Current records</h2><div class="table-wrap" role="region" aria-label="Current records table" tabindex="0"><table><thead><tr>{{range .Columns}}<th scope="col">{{.}}</th>{{end}}</tr></thead><tbody>{{range .Items}}<tr>{{range .}}<td>{{.}}</td>{{end}}</tr>{{end}}</tbody></table></div></section>
+  {{end}}
+</main>
+</body>
+</html>
+
+{{define "user"}}
+<input type="hidden" name="_token" value="{{.CsrfToken}}">
+<label>Username <input name="username" minlength="2" maxlength="64" required></label>
+<label>Email <input name="email" maxlength="256"></label>
+<label>Name <input name="nickname" maxlength="256"></label>
+<label>Group ID <input name="group_id" type="number" min="1" required></label>
+<label>Status <select name="status"><option value="1">Enabled</option><option value="2">Disabled</option></select></label>
+<label class="check"><input name="is_admin" type="checkbox"> Administrator</label>
+<label>Remark <input name="remark" maxlength="256"></label>
+{{end}}
+
+{{define "group"}}
+<input type="hidden" name="_token" value="{{.CsrfToken}}">
+<label>Name <input name="name" maxlength="128" required></label>
+<label>Type <select name="type"><option value="1">Default</option><option value="2">Share</option></select></label>
+{{end}}
+
+{{define "oauth"}}
+<input type="hidden" name="_token" value="{{.CsrfToken}}">
+<label>Name <input name="op" maxlength="64" required></label>
+<label>Type <select name="oauth_type"><option value="github">GitHub</option><option value="google">Google</option><option value="oidc">OIDC</option><option value="linuxdo">Linux.do</option><option value="webauth">WebAuth</option></select></label>
+<label>Client ID <input name="client_id" maxlength="512" required></label>
+<label>Client secret <input name="client_secret" type="password" maxlength="512" required></label>
+<label>Issuer <input name="issuer" maxlength="2048"></label>
+<label>Scopes <input name="scopes" maxlength="512"></label>
+<label class="check"><input name="auto_register" type="checkbox"> Auto-register</label>
+<label class="check"><input name="pkce_enable" type="checkbox"> PKCE</label>
+{{end}}
+
+{{define "confirm"}}
+<input type="hidden" name="_token" value="{{.CsrfToken}}">
+<label>ID <input name="id" type="number" min="1" required></label>
+<label class="check"><input name="confirm" type="checkbox" value="delete" required> I understand this cannot be undone</label>
+{{end}}

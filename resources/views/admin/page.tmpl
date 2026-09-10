@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>{{.Title}} · RustDesk Admin</title>
+  <link rel="stylesheet" href="/public/css/admin.css?v=3.0.1"><script src="/public/vendor/htmx/htmx.min.js?v=2.0.10" defer></script>
+</head>
+<body hx-headers='{"X-CSRF-TOKEN":"{{.CsrfToken}}"}'>
+{{template "shell.tmpl" .}}
+  <main id="content">
+    <header class="page-header">
+      <h1>{{.Title}}</h1>
+      {{if .ManageURL}}<a class="button secondary" href="{{.ManageURL}}">Manage {{.Title}}</a>{{end}}
+    </header>
+    {{if .Path}}
+      <form class="filters" method="get" action="{{.Path}}" hx-get="{{.Path}}" hx-target="#results" hx-push-url="true" hx-indicator="#loading">
+        <label for="search">Filter<input id="search" name="q" value="{{.Query}}" type="search"></label>
+        <label>Rows <select name="page_size"><option{{if eq .PageSize 25}} selected{{end}}>25</option><option{{if eq .PageSize 50}} selected{{end}}>50</option><option{{if eq .PageSize 100}} selected{{end}}>100</option></select></label>
+        <button>Filter</button><span id="loading" class="htmx-indicator" role="status">Loading…</span>
+      </form>
+    {{end}}
+    <div id="results">{{template "table.tmpl" .}}</div>
+  </main>
+</div>
+</body>
+</html>

@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Sign in · RustDesk Admin</title><link rel="stylesheet" href="/public/css/admin.css?v=3.0.1">
+</head>
+<body class="login-page">
+<main class="login-card" aria-labelledby="login-title">
+  <h1 id="login-title">RustDesk Admin</h1>
+  {{if .Error}}<p class="notice error" role="alert">{{.Error}}</p>{{end}}
+  <form method="post" action="/_admin/login">
+    <input type="hidden" name="_token" value="{{.CsrfToken}}">
+    <label for="username">Username</label><input id="username" name="username" autocomplete="username" maxlength="64" required autofocus>
+    <label for="password">Password</label><input id="password" name="password" type="password" autocomplete="current-password" maxlength="256" required>
+    {{if .CaptchaImage}}<input type="hidden" name="captcha_id" value="{{.CaptchaId}}"><img class="captcha" src="{{.CaptchaImage}}" alt="Verification code"><label for="captcha">Verification code</label><input id="captcha" name="captcha" autocomplete="off" maxlength="16" required>{{end}}
+    <button type="submit">Sign in</button>
+  </form>
+  {{if .OAuthProviders}}<section aria-label="Single sign-on"><h2>Single sign-on</h2><p class="notice" role="status">OAuth providers are configured, but browser sign-in is unavailable.</p></section>{{end}}
+</main>
+</body></html>

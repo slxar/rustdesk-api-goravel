@@ -1,0 +1,22 @@
+ARG GO_VERSION=1.25.0
+
+FROM golang:${GO_VERSION}-alpine AS builder
+WORKDIR /src
+RUN apk add --no-cache build-base
+COPY go.mod go.sum ./
+RUN go mod download
+COPY . .
+RUN CGO_ENABLED=1 go build -trimpath -ldflags="-s -w" -o /apimain ./cmd/apimain.go
+
+FROM alpine:3.22
+WORKDIR /app
+RUN apk add --no-cache ca-certificates tzdata
+COPY --from=builder /apimain ./apimain
+COPY conf ./conf
+COPY docs ./docs
+COPY public ./public
+COPY resources ./resources
+RUN mkdir -p data runtime
+VOLUME ["/app/data"]
+EXPOSE 21114
+CMD ["./apimain"]

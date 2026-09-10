@@ -1,0 +1,20 @@
+services:
+  rustdesk-api:
+    build: 
+      context: .
+      dockerfile: Dockerfile.dev
+    # image: lejianwen/rustdesk-api
+    container_name: rustdesk-api
+    environment:
+      - TZ=Asia/Shanghai
+      - RUSTDESK_API_RUSTDESK_ID_SERVER=${RUSTDESK_ID_SERVER:?Set RUSTDESK_ID_SERVER in your local environment}
+      - RUSTDESK_API_RUSTDESK_RELAY_SERVER=${RUSTDESK_RELAY_SERVER:?Set RUSTDESK_RELAY_SERVER in your local environment}
+      - RUSTDESK_API_RUSTDESK_API_SERVER=${RUSTDESK_API_ORIGIN:?Set RUSTDESK_API_ORIGIN in your local environment}
+      - RUSTDESK_API_RUSTDESK_KEY=${RUSTDESK_PUBLIC_KEY:?Set RUSTDESK_PUBLIC_KEY in your local environment}
+    ports:
+      - 21114:21114
+    volumes:
+      - ./data/rustdesk/api:/app/data #将数据库挂载出来方便备份
+      - ./conf:/app/conf # config
+      # - ./resources:/app/resources # 静态资源
+    restart: unless-stopped

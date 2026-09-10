@@ -1,0 +1,25 @@
+.idea
+.codebase-memory/
+.env
+.env.*
+*.key
+*.pem
+runtime/*
+!runtime
+!runtime/cache/.gitkeep
+go.sum
+resources/admin
+!resources/webclient/source.tar.gz
+release
+data/rustdeskapi.db
+
+# Local deployment data and credentials
+*.sqlite
+*.sqlite3
+*.db-wal
+*.db-shm
+id_ed25519
+id_ed25519.pub
+conf/config.local.yaml
+docker-compose.override.yml
+docker-compose.override.yaml
